@@ -48,7 +48,7 @@ struct BackgroundSearcher
     {
         return isTruePixel(startPixel, pixel, threshold);
     }
-    void push(Point pixel)
+    void push_and_visit(Point pixel)
     {
         was[getIndex(pixel)] = true;
         res.push_back(pixel);
@@ -58,19 +58,19 @@ struct BackgroundSearcher
     {
         Point a1(prevPixel.x - 1, prevPixel.y), a2(prevPixel.x, prevPixel.y - 1), a3(prevPixel.x + 1, prevPixel.y), a4(prevPixel.x, prevPixel.y + 1);
         if (isTruePixel(a1))
-            push(a1);
+            push_and_visit(a1);
         if (isTruePixel(a2))
-            push(a2);
+            push_and_visit(a2);
         if (isTruePixel(a3))
-            push(a3);
+            push_and_visit(a3);
         if (isTruePixel(a4))
-            push(a4);
+            push_and_visit(a4);
     }
     std::vector<Point>&& search(Point _startPixel)
     {
         std::cout << "res size before search " << res.size() << "\n";
         startPixel = _startPixel;
-        push(startPixel);
+        push_and_visit(startPixel);
         while (neighbors.size() > 0)
         {
             Point pixel = neighbors.back();
