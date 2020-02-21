@@ -56,15 +56,11 @@ struct BackgroundSearcher
     }
     void setNeighbors(Point prevPixel)
     {
-        Point a1(prevPixel.x - 1, prevPixel.y), a2(prevPixel.x, prevPixel.y - 1), a3(prevPixel.x + 1, prevPixel.y), a4(prevPixel.x, prevPixel.y + 1);
-        if (isTruePixel(a1))
-            push_and_visit(a1);
-        if (isTruePixel(a2))
-            push_and_visit(a2);
-        if (isTruePixel(a3))
-            push_and_visit(a3);
-        if (isTruePixel(a4))
-            push_and_visit(a4);
+        std::vector<Point> localNeighbors = {Point(prevPixel.x - 1, prevPixel.y), Point(prevPixel.x, prevPixel.y - 1),
+                                             Point(prevPixel.x + 1, prevPixel.y), Point(prevPixel.x, prevPixel.y + 1)};
+        for (Point &p : localNeighbors)
+            if (isTruePixel(p))
+                push_and_visit(p);
     }
     std::vector<Point>&& search(Point _startPixel)
     {
