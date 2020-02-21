@@ -71,10 +71,10 @@ struct BackgroundSearcher
         std::cout << "res size before search " << res.size() << "\n";
         startPixel = _startPixel;
         push(startPixel);
-        int count = 0;
-        while (count < neighbors.size())
+        while (neighbors.size() > 0)
         {
-            Point pixel = neighbors[count++];
+            Point pixel = neighbors.back();
+            neighbors.pop_back();
             setNeighbors(pixel);
         }
         neighbors.clear();
