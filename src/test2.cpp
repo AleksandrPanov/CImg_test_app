@@ -66,8 +66,9 @@ struct BackgroundSearcher
         if (isTruePixel(a4))
             push(a4);
     }
-    std::vector<Point>& search(Point _startPixel)
+    std::vector<Point>&& search(Point _startPixel)
     {
+        std::cout << "res size before search " << res.size() << "\n";
         startPixel = _startPixel;
         push(startPixel);
         int count = 0;
@@ -76,7 +77,9 @@ struct BackgroundSearcher
             Point pixel = neighbors[count++];
             setNeighbors(pixel);
         }
-        return res;
+        neighbors.clear();
+        was = std::vector<bool>(size.x*size.y);
+        return std::move(res);
     }
 };
 void setPixel(const CImg<unsigned char> &img, Point p, CImg<unsigned char> &res)
@@ -85,7 +88,6 @@ void setPixel(const CImg<unsigned char> &img, Point p, CImg<unsigned char> &res)
     res(p.x, p.y, 0, 1) = img(p.x, p.y, 0, 1);
     res(p.x, p.y, 2) = img(p.x, p.y, 2);
 }
-
 
 int main()
 {
@@ -104,7 +106,7 @@ int main()
             const int x = main_disp.mouse_x() * image.width() / (double)(main_disp.width());
             const int y = main_disp.mouse_y() * image.height() / (double)(main_disp.height());
             auto pixs = searcher.search(Point(x, y));
-            std::cout << x << " " << y << " " << pixs.size() << "\n";
+            std::cout << "x = " << x << " y = " << y << " res size after search = " << pixs.size() << "\n";
             for (auto pix : pixs)
                 setPixel(image, pix, res);
             draw_disp.display(res);
