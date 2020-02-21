@@ -54,14 +54,6 @@ struct BackgroundSearcher
         res.push_back(pixel);
         neighbors.push_back(pixel);
     }
-    void setNeighbors(Point prevPixel)
-    {
-        std::vector<Point> localNeighbors = {Point(prevPixel.x - 1, prevPixel.y), Point(prevPixel.x, prevPixel.y - 1),
-                                             Point(prevPixel.x + 1, prevPixel.y), Point(prevPixel.x, prevPixel.y + 1)};
-        for (Point &p : localNeighbors)
-            if (isTruePixel(p))
-                push_and_visit(p);
-    }
     std::vector<Point>&& search(Point _startPixel)
     {
         std::cout << "res size before search " << res.size() << "\n";
@@ -71,7 +63,12 @@ struct BackgroundSearcher
         {
             Point pixel = neighbors.back();
             neighbors.pop_back();
-            setNeighbors(pixel);
+
+            std::vector<Point> localNeighbors = {Point(pixel.x - 1, pixel.y), Point(pixel.x, pixel.y - 1),
+                                                 Point(pixel.x + 1, pixel.y), Point(pixel.x, pixel.y + 1)};
+            for (Point &p : localNeighbors)
+                if (isTruePixel(p))
+                    push_and_visit(p);
         }
         neighbors.clear();
         was = std::vector<bool>(size.x*size.y);
