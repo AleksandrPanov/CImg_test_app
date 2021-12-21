@@ -14,14 +14,17 @@ int main()
     {
         main_disp.wait();
         if (main_disp.button() && main_disp.mouse_y() >= 0) {
-            const int y = main_disp.mouse_y() * image.height() / (double)(main_disp.height());
-            const int x = main_disp.mouse_x() * image.width() / (double)(main_disp.width());
-            visu.fill(0).draw_graph(image.get_crop(0, y, 0, 0, image.width() - 1, y, 0, 0), red, 1, 1, 0, 255, 0);
+            const int y = main_disp.mouse_y()*image.height() / (double)(main_disp.height());
+            const int x = main_disp.mouse_x()*image.width() / (double)(main_disp.width());
+            visu.fill(0);
+            visu.draw_graph(image.get_crop(0, y, 0, 0, image.width() - 1, y, 0, 0), red, 1, 1, 0, 255, 0);
             visu.draw_graph(image.get_crop(0, y, 0, 1, image.width() - 1, y, 0, 1), green, 1, 1, 0, 255, 0);
-            visu.draw_graph(image.get_crop(0, y, 0, 2, image.width() - 1, y, 0, 2), blue, 1, 1, 0, 255, 0).display(draw_disp);
+            visu.draw_graph(image.get_crop(0, y, 0, 2, image.width() - 1, y, 0, 2), blue, 1, 1, 0, 255, 0);
+            visu.display(draw_disp);
             unsigned char my_red = image(x, y);
+            unsigned char my_green = image(x, y, 1);
             unsigned char my_blue = image(x, y, 2);
-            std::cout << x << " " << y << " " << (int)my_red << " " << (int)my_blue << "\n";
+            std::cout << "x:" << x << " y:" << y << " red:" << (int)my_red << " green:" << (int)my_green << " blue:" << (int)my_blue << "\n";
         }
     }
     return 0;
